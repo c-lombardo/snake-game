@@ -7,6 +7,8 @@ import java.util.Random;
  */
 public class Snake implements MoveableShape{
     private int direction;
+    private int direction_at_frame_start;
+
     private int score;
     private ArrayList<SnakePart> parts;
 
@@ -31,6 +33,7 @@ public class Snake implements MoveableShape{
     public Snake(int inSize){
         parts = new ArrayList<>();
         direction = RIGHT;
+        direction_at_frame_start = RIGHT;
         score = 0;
         for (int i = 0; i < inSize; i++){
             Color c = new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256));
@@ -89,6 +92,7 @@ public class Snake implements MoveableShape{
      * moves the snake by one piece
      */
     public void move(){
+        direction_at_frame_start = direction;
         for (int i = parts.size() - 1; i >= 0; i--){
             if (!parts.get(i).isHead()) {
                 parts.get(i).setxLoc(parts.get(i - 1).getxLoc());
@@ -133,16 +137,16 @@ public class Snake implements MoveableShape{
      */
     public void changeDirection(int inDirection){
         boolean change = true;
-        if (inDirection == UP && direction == DOWN){
+        if (inDirection == UP && direction_at_frame_start == DOWN){
             change = false;
         }
-        else if (inDirection == DOWN && direction == UP){
+        else if (inDirection == DOWN && direction_at_frame_start == UP){
             change = false;
         }
-        else if (inDirection == RIGHT && direction == LEFT){
+        else if (inDirection == RIGHT && direction_at_frame_start == LEFT){
             change = false;
         }
-        else if (inDirection == LEFT && direction == RIGHT){
+        else if (inDirection == LEFT && direction_at_frame_start == RIGHT){
             change = false;
         }
         if (change)
@@ -155,13 +159,17 @@ public class Snake implements MoveableShape{
      * @return true if it is a food piece, false otherwise
      */
     public boolean checkForFood(Food food){
-        if (direction == UP && food.getxLoc() == parts.get(0).getxLoc() && food.getyLoc() == parts.get(0).getyLoc() - BLOCKSIZE)
+        if (direction == UP && food.getxLoc() == parts.get(0).getxLoc() &&
+                food.getyLoc() == parts.get(0).getyLoc() - BLOCKSIZE)
             return true;
-        else if (direction == DOWN && food.getxLoc() == parts.get(0).getxLoc() && food.getyLoc() == parts.get(0).getyLoc() + BLOCKSIZE)
+        else if (direction == DOWN && food.getxLoc() == parts.get(0).getxLoc() &&
+                food.getyLoc() == parts.get(0).getyLoc() + BLOCKSIZE)
             return true;
-        else if (direction == RIGHT && food.getxLoc() == parts.get(0).getxLoc() + BLOCKSIZE && food.getyLoc() == parts.get(0).getyLoc())
+        else if (direction == RIGHT && food.getxLoc() == parts.get(0).getxLoc() + BLOCKSIZE &&
+                food.getyLoc() == parts.get(0).getyLoc())
             return true;
-        else if (direction == LEFT && food.getxLoc() == parts.get(0).getxLoc() - BLOCKSIZE && food.getyLoc() == parts.get(0).getyLoc())
+        else if (direction == LEFT && food.getxLoc() == parts.get(0).getxLoc() - BLOCKSIZE &&
+                food.getyLoc() == parts.get(0).getyLoc())
             return true;
         return false;
     }

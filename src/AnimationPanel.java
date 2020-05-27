@@ -26,11 +26,7 @@ public class AnimationPanel extends JPanel{
                     f.getEaten();
                     s.grow();
                 }
-                if (s.checkForSelf()){
-                    JOptionPane.showMessageDialog(null, "Game Over! Score: " + s.getScore());
-                    System.exit(0);
-                }
-                if (s.checkForWall(800,800)){
+                if (s.checkForSelf() || s.checkForWall(800,800)){
                     JOptionPane.showMessageDialog(null, "Game Over! Score: " + s.getScore());
                     System.exit(0);
                 }
